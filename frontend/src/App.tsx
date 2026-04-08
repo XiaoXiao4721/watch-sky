@@ -7,7 +7,7 @@ import Signup from './pages/Signup'
 import Movies from './pages/Movies'
 import AddMovie from './pages/AddMovie'
 
-function ProtectedRoute({ user, children }: { user: User | null; children: React.ReactNode }) {
+function ProtectedRoute({ user, children }: { user: User | null | undefined; children: React.ReactNode }) {
   if (user === undefined) return <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', color: '#94a3b8' }}>Loading…</div>
   if (!user) return <Navigate to="/login" replace />
   return <>{children}</>
