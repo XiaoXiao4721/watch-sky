@@ -55,23 +55,12 @@ jobs:
           SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
           SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
         run: |
-          # Write env vars to a YAML file so special chars in JWT keys don't break gcloud's parser
-          python3 - <<'PYEOF'
-import os, yaml
-with open('/tmp/env-vars.yaml', 'w') as f:
-    yaml.dump({
-        'SUPABASE_URL': os.environ['SUPABASE_URL'],
-        'SUPABASE_ANON_KEY': os.environ['SUPABASE_ANON_KEY'],
-        'SUPABASE_SERVICE_KEY': os.environ['SUPABASE_SERVICE_KEY'],
-    }, f)
-PYEOF
-
           gcloud run deploy "${{ env.SERVICE }}" \
             --image "${{ env.IMAGE }}:${{ github.sha }}" \
             --region "${{ env.REGION }}" \
             --platform managed \
             --allow-unauthenticated \
-            --env-vars-file /tmp/env-vars.yaml \
+            --set-env-vars "^|^SUPABASE_URL=$SUPABASE_URL|SUPABASE_ANON_KEY=$SUPABASE_ANON_KEY|SUPABASE_SERVICE_KEY=$SUPABASE_SERVICE_KEY" \
             --min-instances 0 \
             --max-instances 10 \
             --memory 512Mi \
