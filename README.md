@@ -1,5 +1,6 @@
 # Watch Sky
 
+
 Track movies you've watched — with ratings, entry timestamps, and named URLs.
 
 **Stack:** React (Vite) + FastAPI (uvicorn) + Supabase + Google Cloud Run
